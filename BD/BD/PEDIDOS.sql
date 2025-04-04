@@ -1,0 +1,416 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.4
+-- Dumped by pg_dump version 17.4
+
+-- Started on 2025-04-04 11:56:44
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+DROP DATABASE IF EXISTS "PEDIDOS";
+--
+-- TOC entry 4936 (class 1262 OID 16389)
+-- Name: PEDIDOS; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE "PEDIDOS" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'es-ES';
+
+
+ALTER DATABASE "PEDIDOS" OWNER TO postgres;
+
+\connect "PEDIDOS"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 6 (class 2615 OID 16406)
+-- Name: pd; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA pd;
+
+
+ALTER SCHEMA pd OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 225 (class 1259 OID 16424)
+-- Name: addresses; Type: TABLE; Schema: pd; Owner: postgres
+--
+
+CREATE TABLE pd.addresses (
+    id bigint NOT NULL,
+    address character varying(255) NOT NULL,
+    city character varying(255) NOT NULL,
+    department character varying(255),
+    country character varying(255) NOT NULL,
+    email character varying(255) NOT NULL
+);
+
+
+ALTER TABLE pd.addresses OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1259 OID 16423)
+-- Name: addresses_id_seq; Type: SEQUENCE; Schema: pd; Owner: postgres
+--
+
+CREATE SEQUENCE pd.addresses_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE pd.addresses_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4937 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: pd; Owner: postgres
+--
+
+ALTER SEQUENCE pd.addresses_id_seq OWNED BY pd.addresses.id;
+
+
+--
+-- TOC entry 223 (class 1259 OID 16408)
+-- Name: clients; Type: TABLE; Schema: pd; Owner: postgres
+--
+
+CREATE TABLE pd.clients (
+    id bigint NOT NULL,
+    document character varying(255) NOT NULL,
+    document_type character varying(255) NOT NULL,
+    first_name character varying(255) NOT NULL,
+    last_name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE pd.clients OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 16407)
+-- Name: client_id_seq; Type: SEQUENCE; Schema: pd; Owner: postgres
+--
+
+CREATE SEQUENCE pd.client_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE pd.client_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4938 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: client_id_seq; Type: SEQUENCE OWNED BY; Schema: pd; Owner: postgres
+--
+
+ALTER SEQUENCE pd.client_id_seq OWNED BY pd.clients.id;
+
+
+--
+-- TOC entry 227 (class 1259 OID 16433)
+-- Name: client; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.client (
+    id bigint NOT NULL,
+    document character varying(255) NOT NULL,
+    documenttype character varying(255) NOT NULL,
+    firstname character varying(255) NOT NULL,
+    lastname character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.client OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 16400)
+-- Name: clients; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.clients (
+    id bigint NOT NULL,
+    document character varying(255) NOT NULL,
+    document_type character varying(50) NOT NULL,
+    first_name character varying(50) NOT NULL,
+    last_name character varying(50) NOT NULL,
+    documenttype character varying(255) NOT NULL,
+    firstname character varying(255) NOT NULL,
+    lastname character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.clients OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 16399)
+-- Name: client_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.client_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.client_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4939 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: client_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.client_id_seq OWNED BY public.clients.id;
+
+
+--
+-- TOC entry 226 (class 1259 OID 16432)
+-- Name: client_id_seq1; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.client ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.client_id_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 219 (class 1259 OID 16392)
+-- Name: person; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.person (
+    id bigint NOT NULL,
+    apellidos character varying(255),
+    autoriza boolean,
+    ciudad character varying(255),
+    correo character varying(255),
+    departamento character varying(255),
+    direccion character varying(255),
+    documento character varying(255),
+    fechadeautorizacion timestamp(6) without time zone,
+    nombres character varying(255),
+    pais character varying(255),
+    tipodocumento character varying(255)
+);
+
+
+ALTER TABLE public.person OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 16391)
+-- Name: person_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.person ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.person_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 4765 (class 2604 OID 16470)
+-- Name: addresses id; Type: DEFAULT; Schema: pd; Owner: postgres
+--
+
+ALTER TABLE ONLY pd.addresses ALTER COLUMN id SET DEFAULT nextval('pd.addresses_id_seq'::regclass);
+
+
+--
+-- TOC entry 4764 (class 2604 OID 16440)
+-- Name: clients id; Type: DEFAULT; Schema: pd; Owner: postgres
+--
+
+ALTER TABLE ONLY pd.clients ALTER COLUMN id SET DEFAULT nextval('pd.client_id_seq'::regclass);
+
+
+--
+-- TOC entry 4763 (class 2604 OID 16414)
+-- Name: clients id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.clients ALTER COLUMN id SET DEFAULT nextval('public.client_id_seq'::regclass);
+
+
+--
+-- TOC entry 4928 (class 0 OID 16424)
+-- Dependencies: 225
+-- Data for Name: addresses; Type: TABLE DATA; Schema: pd; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 4926 (class 0 OID 16408)
+-- Dependencies: 223
+-- Data for Name: clients; Type: TABLE DATA; Schema: pd; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 4930 (class 0 OID 16433)
+-- Dependencies: 227
+-- Data for Name: client; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 4924 (class 0 OID 16400)
+-- Dependencies: 221
+-- Data for Name: clients; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 4922 (class 0 OID 16392)
+-- Dependencies: 219
+-- Data for Name: person; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 4940 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: pd; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pd.addresses_id_seq', 1, false);
+
+
+--
+-- TOC entry 4941 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: client_id_seq; Type: SEQUENCE SET; Schema: pd; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pd.client_id_seq', 1, false);
+
+
+--
+-- TOC entry 4942 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.client_id_seq', 1, false);
+
+
+--
+-- TOC entry 4943 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: client_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.client_id_seq1', 1, false);
+
+
+--
+-- TOC entry 4944 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: person_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.person_id_seq', 1, false);
+
+
+--
+-- TOC entry 4773 (class 2606 OID 16472)
+-- Name: addresses addresses_pkey; Type: CONSTRAINT; Schema: pd; Owner: postgres
+--
+
+ALTER TABLE ONLY pd.addresses
+    ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4771 (class 2606 OID 16442)
+-- Name: clients client_pkey; Type: CONSTRAINT; Schema: pd; Owner: postgres
+--
+
+ALTER TABLE ONLY pd.clients
+    ADD CONSTRAINT client_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4769 (class 2606 OID 16416)
+-- Name: clients client_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.clients
+    ADD CONSTRAINT client_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4775 (class 2606 OID 16439)
+-- Name: client client_pkey1; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.client
+    ADD CONSTRAINT client_pkey1 PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4767 (class 2606 OID 16398)
+-- Name: person person_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.person
+    ADD CONSTRAINT person_pkey PRIMARY KEY (id);
+
+
+-- Completed on 2025-04-04 11:56:44
+
+--
+-- PostgreSQL database dump complete
+--
+
